@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+option java_multiple_files=true;
+option java_package= "br.edu.uri.biblioteca.grpc";
+option java_outer_classname= "BibliotecaProto";
+
+package Biblioteca;
+
+message AutorMessage {
+  int64 id = 1;
+  string nome = 2;
+  string nacionalidade = 3;
+}
+
+message LivroMessage {
+  int64 id= 1;
+  string titulo = 2;
+  string isbn = 3;
+  int32 anoPublicacao = 4;
+  AutorMessage autor = 5;
+}
+
+message AutorInputMessage {
+  string nome = 1;
+  string nacionalidade = 2;
+}
+
+message CriarLivroRequest {
+  string titulo = 1;
+  string isbn = 2;
+  int32 anoPublicacao = 3;
+  AutorInputMessage autor = 4;
+}
+
+message BuscarLivroPorIdRequest {
+  int64 id = 1;
+}
+
+message ListarLivrosRequest {}
+
+message ListarLivrosResponse {
+  repeated LivroMessage livros = 1;
+}
+
+message AtualizarLivroRequest {
+  int64 id = 1;
+  string titulo = 2;
+  string isbn = 3;
+  int32 anoPublicacao = 4;
+  AutorInputMessage autor = 5;
+}
+
+message RemoverLivroRequest {
+  int64 id = 1;
+}
+
+message RemoverLivroResponse {
+  bool sucesso = 1;
+}
+
+// CRUD
+
+service LivroGrpcService {
+  rpc CriarLivro(CriarLivroRequest) returns (LivroMessage);
+  rpc BuscarLivroPorId(BuscarLivroPorIdRequest) returns (LivroMessage);
+  rpc ListarLivros(ListarLivrosRequest) returns (ListarLivrosResponse);
+  rpc AtualizarLivro(AtualizarLivroRequest) returns (LivroMessage);
+  rpc RemoverLivro(RemoverLivroRequest) returns (RemoverLivroResponse);
+}
