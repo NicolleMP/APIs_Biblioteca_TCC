@@ -3,6 +3,7 @@ package br.edu.uri.biblioteca.rest;
 import br.edu.uri.biblioteca.domain.Livro;
 import br.edu.uri.biblioteca.rest.dto.LivroRequestDTO;
 import br.edu.uri.biblioteca.service.BibliotecaService;
+import br.edu.uri.biblioteca.exception.IsbnDuplicadoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,13 +56,13 @@ public class LivroRestController {
     }
 
     // Handlers de erro para HTTP REST
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<String> handleNotFound(NoSuchElementException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleNotFound(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleBadRequest(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    @ExceptionHandler(IsbnDuplicadoException.class)
+    public ResponseEntity<String> handleIsbnDuplicado(IsbnDuplicadoException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }
