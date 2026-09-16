@@ -2,6 +2,7 @@ package br.edu.uri.biblioteca.grpc;
 
 import br.edu.uri.biblioteca.domain.Livro;
 import br.edu.uri.biblioteca.service.BibliotecaService;
+import br.edu.uri.biblioteca.exception.IsbnDuplicadoException;
 import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
@@ -31,7 +32,7 @@ public class LivroGrpcServiceImpl extends LivroGrpcServiceGrpc.LivroGrpcServiceI
             );
             responseObserver.onNext(toLivroMessage(livro));
             responseObserver.onCompleted();
-        } catch (IllegalArgumentException e) {
+        } catch (IsbnDuplicadoException e) {
             responseObserver.onError(Status.ALREADY_EXISTS.withDescription(e.getMessage()).asRuntimeException());
         }
     }
@@ -77,7 +78,7 @@ public class LivroGrpcServiceImpl extends LivroGrpcServiceGrpc.LivroGrpcServiceI
             responseObserver.onCompleted();
         } catch (NoSuchElementException e) {
             responseObserver.onError(Status.NOT_FOUND.withDescription(e.getMessage()).asRuntimeException());
-        } catch (IllegalArgumentException e) {
+        } catch (IsbnDuplicadoException e) {
             responseObserver.onError(Status.ALREADY_EXISTS.withDescription(e.getMessage()).asRuntimeException());
         }
     }
