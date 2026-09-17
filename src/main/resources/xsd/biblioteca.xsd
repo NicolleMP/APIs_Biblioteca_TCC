@@ -1,0 +1,122 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://uri.edu.br/biblioteca/soap"
+           targetNamespace="http://uri.edu.br/biblioteca/soap"
+           elementFormDefault="qualified">
+
+    <!-- Entidades -->
+    <xs:complexType name="autorSoap">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="nome" type="xs:string"/>
+            <xs:element name="nacionalidade" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="livroSoap">
+        <xs:sequence>
+            <xs:element name="id" type="xs:long"/>
+            <xs:element name="titulo" type="xs:string"/>
+            <xs:element name="isbn" type="xs:string"/>
+            <xs:element name="anoPublicacao" type="xs:int"/>
+            <xs:element name="autor" type="tns:autorSoap"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="autorInputSoap">
+        <xs:sequence>
+            <xs:element name="nome" type="xs:string"/>
+            <xs:element name="nacionalidade" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Operações CRUD (Requests e Responses) -->
+
+    <!-- Buscar por ID -->
+    <xs:element name="BuscarLivroPorIdRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="BuscarLivroPorIdResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="livro" type="tns:livroSoap"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Listar Livros -->
+    <xs:element name="ListarLivrosRequest">
+        <xs:complexType/>
+    </xs:element>
+
+    <xs:element name="ListarLivrosResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="livros" type="tns:livroSoap" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Criar Livro -->
+    <xs:element name="CriarLivroRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="titulo" type="xs:string"/>
+                <xs:element name="isbn" type="xs:string"/>
+                <xs:element name="anoPublicacao" type="xs:int"/>
+                <xs:element name="autor" type="tns:autorInputSoap"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="CriarLivroResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="livro" type="tns:livroSoap"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Atualizar Livro -->
+    <xs:element name="AtualizarLivroRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+                <xs:element name="titulo" type="xs:string"/>
+                <xs:element name="isbn" type="xs:string"/>
+                <xs:element name="anoPublicacao" type="xs:int"/>
+                <xs:element name="autor" type="tns:autorInputSoap"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="AtualizarLivroResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="livro" type="tns:livroSoap"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- Remover Livro -->
+    <xs:element name="RemoverLivroRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="id" type="xs:long"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="RemoverLivroResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="sucesso" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>
